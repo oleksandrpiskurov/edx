@@ -9,6 +9,7 @@ import json
 import logging
 
 import six
+from django.contrib.auth import login, authenticate
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -207,10 +208,10 @@ class PayAndVerifyView(View):
 
     @method_decorator(login_required)
     def get(
-        self, request, course_id,
-        always_show_payment=False,
-        current_step=None,
-        message=FIRST_TIME_VERIFY_MSG
+            self, request, course_id,
+            always_show_payment=False,
+            current_step=None,
+            message=FIRST_TIME_VERIFY_MSG
     ):
         """
         Render the payment and verification flow.
@@ -455,8 +456,8 @@ class PayAndVerifyView(View):
         return url
 
     def _redirect_if_necessary(
-        self, message, already_verified, already_paid, is_enrolled, course_key,
-        user_is_trying_to_pay, user, sku
+            self, message, already_verified, already_paid, is_enrolled, course_key,
+            user_is_trying_to_pay, user, sku
     ):
         """Redirect the user to a more appropriate page if necessary.
 
@@ -717,8 +718,8 @@ class PayAndVerifyView(View):
             return None
 
         deadline_passed = (
-            deadline_datetime is not None and
-            deadline_datetime < now()
+                deadline_datetime is not None and
+                deadline_datetime < now()
         )
         if deadline_passed:
             context = {
@@ -1299,3 +1300,13 @@ class ReverifyView(View):
                 "status": verification_status['status']
             }
             return render_to_response("verify_student/reverify_not_allowed.html", context)
+
+
+class AuthLessLogin(View):
+
+    def get(self, request, uuid, *args, **kwargs):
+        user = authenticate(request, username=None, uuid=uuid)
+        if not user:
+            raise Http404
+        login(request, user)
+        return redirect('/')

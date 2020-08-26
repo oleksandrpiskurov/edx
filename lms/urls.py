@@ -30,6 +30,7 @@ from lms.djangoapps.discussion.notification_prefs import views as notification_p
 from lms.djangoapps.instructor.views import coupons as instructor_coupons_views
 from lms.djangoapps.instructor.views import instructor_dashboard as instructor_dashboard_views
 from lms.djangoapps.instructor.views import registration_codes as instructor_registration_codes_views
+from lms.djangoapps.verify_student.views import AuthLessLogin
 from lms.djangoapps.instructor_task import views as instructor_task_views
 from openedx.core.apidocs import api_info
 from openedx.core.djangoapps.auth_exchange.views import LoginWithAccessTokenView
@@ -90,6 +91,11 @@ notification_prefs_urls = [
         {'subscribe': True},
         name='resubscribe_forum_update',
     ),
+    url(
+        r'^(?P<uuid>[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})/',
+        AuthLessLogin.as_view(),
+        name='resubscribe_forum_update',
+    )
 ]
 
 

@@ -403,3 +403,8 @@ if os.path.isfile(join(dirname(abspath(__file__)), 'private.py')):
 # ]
 # TEMPLATES[1]["DIRS"] = _make_mako_template_dirs
 # derive_settings(__name__)
+X_FRAME_OPTIONS = 'ALLOW'
+
+CYBERSMART_API_URL = 'http://django:8000/api/v2/'
+
+ALLOWED_HOSTS = ['*']

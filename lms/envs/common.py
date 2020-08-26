@@ -778,6 +778,7 @@ DEFAULT_TEMPLATE_ENGINE_DIRS = DEFAULT_TEMPLATE_ENGINE['DIRS'][:]
 ###############################################################################################
 
 AUTHENTICATION_BACKENDS = [
+    'openedx.core.djangoapps.oauth_dispatch.auth.UUidBackend',
     'rules.permissions.ObjectPermissionBackend',
     'openedx.core.djangoapps.oauth_dispatch.dot_overrides.backends.EdxRateLimitedAllowAllUsersModelBackend',
     'bridgekeeper.backends.RulePermissionBackend',
